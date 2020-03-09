@@ -3,7 +3,6 @@ local cframe    = _G.require("cframe")
 
 local v3         = Vector3.new
 local nv3        = v3()
-local dot        = nv3.Dot
 local cf         = CFrame.new
 local ncf        = cf()
 local cfunp      = ncf.components
@@ -39,7 +38,7 @@ local function cfparts(cf)
 end
 
 local function v3ref(vec, dir)
-	return vec - 2*dot(vec, dir)*dir
+	return dir*vec
 end
 
 local function cfref(o, m)
@@ -93,7 +92,7 @@ structure.MeshPart = structure.WedgePart
 
 structure.light = function(o, m)
 	if o:IsA("BasePart") then
-		local pos = argstr("vec3.new(", ", ", ")", v3unp(o.CFrame.Position))
+		local pos = argstr("vec3.new(", ", ", ")", v3unp(v3ref(o.CFrame.Position, m)))
 		local siz = argstr("vec3.new(", ", ", ")", v3unp(o.Size))
 		local col = argstr("vec3.new(", ", ", ")", c3unp(o.Color))
 		local opa = 1 - o.Transparency
