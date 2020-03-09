@@ -91,6 +91,16 @@ end
 
 structure.MeshPart = structure.WedgePart
 
+structure.light = function(o, m)
+	if o:IsA("BasePart") then
+		local pos = argstr("vec3.new", ", ", ")", v3unp(o.CFrame.Position))
+		local siz = argstr("vec3.new", ", ", ")", v3unp(o.Size))
+		local col = argstr("vec3.new", ", ", ")", c3unp(o.Color))
+		local opa = 1 - o.Transparency
+		return argstr("{", ", ", "};", pos, siz, col, opa)
+	end
+end
+
 local function captureworld(a)
 	local t = workspace:GetDescendants()
 	for i = 1, #t do
@@ -103,8 +113,11 @@ local function captureworld(a)
 	for i0, v0 in next, structure do
 		print(i0.." = {")
 		for i1, v1 in next, t do
-			if v1.ClassName == i0 then
-				print(v0(v1, a))
+			if v1.ClassName == i0 or v1.Name == i0 then
+				local r = v0(v1, a)
+				if r then
+					print(r)
+				end
 			end
 		end
 		print("};")
