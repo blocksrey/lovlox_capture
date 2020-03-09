@@ -42,14 +42,14 @@ local function v3ref(vec, dir)
 	return vec - 2*dot(vec, dir)*dir
 end
 
-local function cfref(ori, dir)
-	local p, x, y, z = cfparts(ori)
-	
-	local v = v3ref(p, dir)
-	local a = axisangle.matrix(ori)
-	local r = v3ref(a, dir)
-	
-	return cframe.axisangle(r) + v
+local function cfref(o, m)
+	local p0, x0, y0, z0 = cfparts(o)
+	local mx, my, mz = v3unp(m)
+	local p1 = m*p0
+	local x1 = m*x0*mx
+	local y1 = m*y0*my
+	local z1 = m*z0*mz
+	return CFrame.fromMatrix(p1, x1, y1, z1)
 end
 
 local function argstr(str, div, fin, ...)
